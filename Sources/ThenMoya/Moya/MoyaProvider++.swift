@@ -17,7 +17,7 @@ public extension MoyaProviderType where Target: Moya.TargetType {
         callbackQueue: DispatchQueue = .main,
         completion: @escaping (Result<ThenResponse<T>, MoyaError>) -> Void
     ) -> Moya.Cancellable {
-        request(target, callbackQueue: callbackQueue, progress: progress) { result in
+        self.request(target, callbackQueue: callbackQueue, progress: progress) { result in
             switch result {
             case let .failure(error):
                 completion(.failure(error.format(by: target)))
@@ -27,7 +27,7 @@ public extension MoyaProviderType where Target: Moya.TargetType {
                 switch value {
                 case let .failure(error):
                     completion(.failure(error))
-                    
+
                 case let .success(mapped):
                     completion(.success(ThenResponse<T>(response: response, value: mapped)))
                 }
@@ -44,7 +44,7 @@ public extension MoyaProviderType where Target: Moya.TargetType {
         callbackQueue: DispatchQueue = .main,
         completion: @escaping (Result<ThenResponse<T>, MoyaError>) -> Void
     ) -> Moya.Cancellable {
-        request(target, callbackQueue: callbackQueue, progress: progress) { result in
+        self.request(target, callbackQueue: callbackQueue, progress: progress) { result in
             switch result {
             case let .failure(error):
                 completion(.failure(error.format(by: target)))
@@ -52,9 +52,9 @@ public extension MoyaProviderType where Target: Moya.TargetType {
             case let .success(response):
                 let value = response.mapRestful(mapType: mapType, restful: restful)
                 switch value {
-                case let .failure(error): 
+                case let .failure(error):
                     completion(.failure(error))
-                    
+
                 case let .success(mapped):
                     completion(.success(ThenResponse<T>(response: response, value: mapped)))
                 }
@@ -72,7 +72,7 @@ public extension MoyaProviderType where Target: ThenTargetType {
         callbackQueue: DispatchQueue = .main,
         completion: @escaping (Result<ThenResponse<T>, MoyaError>) -> Void
     ) -> Moya.Cancellable {
-        request(target, callbackQueue: callbackQueue, progress: progress) { result in
+        self.request(target, callbackQueue: callbackQueue, progress: progress) { result in
             switch result {
             case let .failure(error):
                 completion(.failure(error.format(by: target)))
@@ -80,16 +80,16 @@ public extension MoyaProviderType where Target: ThenTargetType {
             case let .success(response):
                 let value = response.map(mapType: mapType, thenTarget: target)
                 switch value {
-                case let .failure(error): 
+                case let .failure(error):
                     completion(.failure(error))
-                    
+
                 case let .success(mapped):
                     completion(.success(ThenResponse<T>(response: response, value: mapped)))
                 }
             }
         }
     }
-    
+
     @discardableResult
     func request<T: Mapping, E: RestfulError>(
         _ target: Target,
@@ -99,7 +99,7 @@ public extension MoyaProviderType where Target: ThenTargetType {
         callbackQueue: DispatchQueue = .main,
         completion: @escaping (Result<ThenResponse<T>, MoyaError>) -> Void
     ) -> Moya.Cancellable {
-        request(target, callbackQueue: callbackQueue, progress: progress) { result in
+        self.request(target, callbackQueue: callbackQueue, progress: progress) { result in
             switch result {
             case let .failure(error):
                 completion(.failure(error.format(by: target)))
@@ -107,10 +107,10 @@ public extension MoyaProviderType where Target: ThenTargetType {
             case let .success(response):
                 let value = response.mapRestful(mapType: mapType, restful: restful, thenTarget: target)
                 switch value {
-                case let .failure(error):  
+                case let .failure(error):
                     completion(.failure(error))
-                    
-                case let .success(mapped): 
+
+                case let .success(mapped):
                     completion(.success(ThenResponse<T>(response: response, value: mapped)))
                 }
             }
